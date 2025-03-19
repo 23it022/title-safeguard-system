@@ -44,11 +44,28 @@ const VerificationResult: React.FC<VerificationResultProps> = ({ result, onReset
   return (
     <div className="w-full max-w-2xl animate-scale-in">
       <div className="glass-panel rounded-lg p-6 space-y-6">
-        <div className="flex flex-col items-center space-y-4">
-          {getStatusIcon()}
-          <h2 className={`text-xl font-semibold ${getStatusColor()}`}>
-            {isVerified ? 'Title Verification Passed' : 'Title Verification Failed'}
-          </h2>
+        {/* Header with status and similarity percentage */}
+        <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
+          <div className="flex flex-col items-center md:items-start space-y-1">
+            {getStatusIcon()}
+            <h2 className={`text-xl font-semibold ${getStatusColor()}`}>
+              {isVerified ? 'Title Verification Passed' : 'Title Verification Failed'}
+            </h2>
+          </div>
+          
+          <div className="text-center md:text-right">
+            <p className="text-sm text-foreground/70 mb-1">Similarity to Existing Titles</p>
+            <div className="flex items-center justify-center md:justify-end gap-2">
+              <span className={`text-3xl font-bold ${
+                similarityPercentage > 70 ? 'text-red-500' : 
+                similarityPercentage > 50 ? 'text-amber-500' : 
+                'text-green-500'
+              }`}>{similarityPercentage}%</span>
+              <span className="bg-foreground/10 px-2 py-1 rounded text-xs">
+                {similarityPercentage > 70 ? 'High' : similarityPercentage > 50 ? 'Moderate' : 'Low'}
+              </span>
+            </div>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -121,9 +138,14 @@ const VerificationResult: React.FC<VerificationResultProps> = ({ result, onReset
                   <li key={index} className="border-b border-border/40 last:border-0 pb-2 last:pb-0">
                     <div className="flex flex-col sm:flex-row sm:justify-between">
                       <span className="font-medium">{match.title.name}</span>
-                      <span className="text-sm text-foreground/80">
-                        {match.similarityScore.toFixed(1)}% similar
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-sm font-medium ${
+                          match.similarityScore > 70 ? 'text-red-500' : 
+                          match.similarityScore > 50 ? 'text-amber-500' : 
+                          'text-green-500'
+                        }`}>{match.similarityScore.toFixed(1)}%</span>
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-foreground/10">similar</span>
+                      </div>
                     </div>
                     <div className="text-sm text-foreground/70 mt-1">
                       <span>{match.title.category} • {match.title.language}</span>
