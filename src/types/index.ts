@@ -27,7 +27,7 @@ export interface VerificationResult {
 export interface VerificationRequest {
   title: string;
   language: string;
-  category: string;
+  category?: string; // Made category optional since we're removing the field
 }
 
 export type Language = 'English' | 'Hindi' | 'Bengali' | 'Tamil' | 'Telugu' | 'Marathi' | 'Gujarati' | 'Kannada' | 'Malayalam' | 'Punjabi' | 'Urdu';

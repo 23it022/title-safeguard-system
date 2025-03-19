@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { verifyTitle } from '@/utils/verificationAlgorithms';
-import { Category, Language, VerificationRequest, VerificationResult } from '@/types';
+import { Language, VerificationRequest, VerificationResult } from '@/types';
 
 interface TitleFormProps {
   onVerificationComplete: (result: VerificationResult) => void;
@@ -9,7 +9,6 @@ interface TitleFormProps {
 
 const TitleForm: React.FC<TitleFormProps> = ({ onVerificationComplete }) => {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<Category>('Newspaper');
   const [language, setLanguage] = useState<Language>('English');
   const [isVerifying, setIsVerifying] = useState(false);
   
@@ -24,7 +23,7 @@ const TitleForm: React.FC<TitleFormProps> = ({ onVerificationComplete }) => {
     setTimeout(() => {
       const result = verifyTitle({
         title: title.trim(),
-        category,
+        category: 'Newspaper', // Default category since we removed the selection
         language
       });
       
@@ -32,10 +31,6 @@ const TitleForm: React.FC<TitleFormProps> = ({ onVerificationComplete }) => {
       setIsVerifying(false);
     }, 800);
   };
-
-  const categories: Category[] = [
-    'Newspaper', 'Magazine', 'Journal', 'Periodical', 'Digital Media'
-  ];
   
   const languages: Language[] = [
     'English', 'Hindi', 'Bengali', 'Tamil', 'Telugu', 'Marathi', 
@@ -63,38 +58,20 @@ const TitleForm: React.FC<TitleFormProps> = ({ onVerificationComplete }) => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-foreground/80 mb-1">
-                Publication Category
-              </label>
-              <select
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value as Category)}
-                className="w-full bg-background/50 border border-input rounded-md px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 transition-all duration-200"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div>
-              <label htmlFor="language" className="block text-sm font-medium text-foreground/80 mb-1">
-                Primary Language
-              </label>
-              <select
-                id="language"
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as Language)}
-                className="w-full bg-background/50 border border-input rounded-md px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 transition-all duration-200"
-              >
-                {languages.map((lang) => (
-                  <option key={lang} value={lang}>{lang}</option>
-                ))}
-              </select>
-            </div>
+          <div>
+            <label htmlFor="language" className="block text-sm font-medium text-foreground/80 mb-1">
+              Primary Language
+            </label>
+            <select
+              id="language"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as Language)}
+              className="w-full bg-background/50 border border-input rounded-md px-4 py-3 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 transition-all duration-200"
+            >
+              {languages.map((lang) => (
+                <option key={lang} value={lang}>{lang}</option>
+              ))}
+            </select>
           </div>
         </div>
         
